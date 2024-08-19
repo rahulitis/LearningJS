@@ -1,66 +1,56 @@
-/*
-    Classes 00. Product Inventory Project - Create an application which manages an inventory of products. Create a product class which has a price, id, and quantity on hand.
-    Then create an inventory class which keeps track of various products and can sum up the inventory value. 
-*/
+class Product:
+    def __init__(self, name, price, product_id, quantity):
+        self.name = name
+        self.price = price
+        self.product_id = product_id
+        self.quantity = quantity
 
-(function () {
-    "use strict";
+    class Inventory:
+        def __init__(self):
+            self.products = []
 
-    function Product(id, name, price, quantity) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-    }
+        def add_product(self, name, price, product_id, quantity):
+            product = Product(name, price, product_id, quantity)
+            self.products.append(product)
+            return product
 
-    Product.prototype = {
-        add : function (count) {
-            this.quantity += count === 0 || count ? count : 1;
-        },
+        def remove_product(self, name, product_id):
+            for product in self.products:
+                if product.product_id == product_id and product.name == name:
+                    self.products.remove(product)
+                return
+    
+        def tracking_product(self, product_id):
+            for product in self.products:
+                if product.product_id == product_id:
+                    return product.quantity
 
-        remove : function (count) {
-            this.quantity -= count === 0 || count ? count : 1;
-        },
+        def list_all_products(self):
+            return self.products
+    
+        def value_of_inventory(self):
+            total = 0
+            for product in self.products:
+                total = total + product.price*product.quantity
+            return total
+    
 
-        setPrice : function (value) {
-            this.price = value;
-        },
 
-        toString : function () {
-            return this.name;
-        }
-    };
+object = Product("apple", 2, 1, 10)
+object2 = Product("banana", 3, 2, 20)
+object3 = Product("orange", 4, 3, 30)
+object4 = Product("grape", 5, 4, 40)
 
-    function Inventary() {
-        this.items = Array.prototype.slice.call(arguments);
-    }
 
-    Inventary.prototype = {
-        add : function (item) {
-            this.items.push(item);
-        },
 
-        remove : function (item) {
-            var index = this.items.indexOf(item);
 
-            if (index > -1) {
-                this.items.splice(index, 1);
-            }
-        },
+inventory = Product.Inventory()
+inventory.add_product("cheese", 2, 1, 10)
+inventory.remove_product("banana", 2)
+inventory.tracking_product(30)
 
-        getTotalPrice : function () {
-            var sum = this.items.reduce(function (previousValue, currentValue, index, array) {
-                return previousValue + currentValue.price * currentValue.quantity;
-            }, 0);
+print(inventory.list_all_products())
+inventory.value_of_inventory()
 
-            return sum;
-        }
-    };
 
-    var peaches = new Product(0, "peaches", 5, 5000),
-        carrots = new Product(1, "carrots", 2, 10000),
-        bananas = new Product(2, "bananas", 6, 3000),
-        inventary = new Inventary(peaches, carrots, bananas);
-
-    return inventary.getTotalPrice();
-}());
+inventory.list_all_products()
